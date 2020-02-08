@@ -1,16 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using static Bogus.DataSets.Name;
 
-namespace Profile.Entityframework.EF
-{
-    public partial class Profile
-    {
+namespace Profile.Entityframework.EF {
+    public partial class Profile {
         public string ProfileId { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
         public string StreetNumber { get; set; }
         public string StreetName { get; set; }
         public string City { get; set; }

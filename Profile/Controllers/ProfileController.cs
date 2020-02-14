@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Profile.Entityframework.EF;
 using Profile.Mock;
 using EF = Profile.Entityframework.EF;
@@ -45,7 +48,15 @@ namespace Profile.Controllers
             profile = ProfileMock.People();
             this.context.Profile.Add(profile);
             await this.context.SaveChangesAsync();
-            await notify.Notify($"{profile.FirstName} {profile.LastName} got created. ID: {profile.ProfileId}");
+
+            var json = JsonConvert.SerializeObject(profile);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            await notify.Notify<StringContent>(data);
+            //var data = new FormUrlEncodedContent(new[]
+            //{
+            //    new KeyValuePair<string, string>("value",json)
+            //});
+            //await notify.Notify<FormUrlEncodedContent>(data);
             return Ok(profile);
         }
 

@@ -47,7 +47,7 @@ namespace Profile {
             });
 
             services.AddControllers ().AddNewtonsoftJson ();
-
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddDbContextPool<CroudPulseDbContext> (opts => {
                 opts.UseMySql (Configuration.GetConnectionString ("CroudPulseDbContext"));
             });

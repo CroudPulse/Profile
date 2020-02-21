@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Net;
 
 namespace Profile
 {
@@ -20,6 +22,17 @@ namespace Profile
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel((context, options) =>
+                    {
+                        // IdentityModelEventSource.ShowPII = true; // only for demo
+                        options.Limits.MinRequestBodyDataRate = null;
+
+                        options.Listen(IPAddress.Any, 5003);
+                        options.Listen(IPAddress.Any, 15003, listenOptions =>
+                        {
+                            listenOptions.Protocols = HttpProtocols.Http2;
+                        });
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "Deploy.Profile.fullname" . }}
+  name: {{ include "Deploy.Profile.fullname" . }}-service
   labels:
     {{- include "Deploy.Profile.labels" . | nindent 4 }}
 spec:

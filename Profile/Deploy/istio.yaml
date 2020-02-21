@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile
+  labels:
+    app: profile
+    service: profile
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: profile
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: croudpulse-profile
+  labels:
+    account: profile
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profile-v1
+  labels:
+    app: profile
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: profile
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: profile
+        version: v1
+    spec:
+      serviceAccountName: croudpulse-profile
+      containers:
+      - name: profile
+        image: gcr.io/fluted-agency-265710/profile:alpha-v0.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: croudpulse-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - '*'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: croudpulse-service
+spec:
+  gateways:
+  - croudpulse-gateway
+  hosts:
+  - '*'
+  http:
+  # - match:
+  #   - uri:
+  #       prefix: /profile
+  #   - uri:
+  #       prefix: /profile/
+  #   # rewrite:
+  #   #   uri: "/"
+  #   route:
+  #   - destination:
+  #       host: profile-api-service
+  #       # host: profile-api.expo-dev.svc.cluster.local
+  #       port:
+  #         number: 80
+  # - match:
+  #   - uri:
+  #       exact: /weatherforecast
+    - route:
+      - destination:
+          host: profile.default.svc.cluster.local
+          # host: profile-api.expo-dev.svc.cluster.local
+          port:
+            number: 80
+

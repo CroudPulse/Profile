@@ -7,7 +7,7 @@ metadata:
     service: profile
 spec:
   ports:
-  - port: 80
+  - port: 5003
     name: http
   selector:
     app: profile
@@ -41,10 +41,10 @@ spec:
       serviceAccountName: croudpulse-profile
       containers:
       - name: profile
-        image: gcr.io/fluted-agency-265710/profile:alpha-v0.0.1
+        image: gcr.io/fluted-agency-265710/profile:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
+        - containerPort: 5003
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -92,5 +92,5 @@ spec:
           host: profile.default.svc.cluster.local
           # host: profile-api.expo-dev.svc.cluster.local
           port:
-            number: 80
+            number: 5003
 

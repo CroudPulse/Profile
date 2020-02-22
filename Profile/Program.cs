@@ -22,18 +22,23 @@ namespace Profile
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureKestrel((context, options) =>
-                    {
-                        // IdentityModelEventSource.ShowPII = true; // only for demo
-                        options.Limits.MinRequestBodyDataRate = null;
+                    // webBuilder.ConfigureKestrel((context, options) =>
+                    // {
+                    //     // IdentityModelEventSource.ShowPII = true; // only for demo
+                    //     options.Limits.MinRequestBodyDataRate = null;
 
-                        options.Listen(IPAddress.Any, 5003);
-                        options.Listen(IPAddress.Any, 15003, listenOptions =>
-                        {
-                            listenOptions.Protocols = HttpProtocols.Http2;
-                        });
-                    });
-                    webBuilder.UseStartup<Startup>();
+                    //     options.Listen(IPAddress.Any, 5003);
+                    //     options.Listen(IPAddress.Any, 15003, listenOptions =>
+                    //     {
+                    //         listenOptions.Protocols = HttpProtocols.Http2;
+                    //     });
+                    // });
+                    webBuilder
+                        // .UseUrls("http://*:5003")
+                        .UseKestrel(options=>{
+                            options.Listen(IPAddress.Any,5003);
+                        })
+                        .UseStartup<Startup>();
                 });
     }
 }

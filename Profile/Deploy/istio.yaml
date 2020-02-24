@@ -7,7 +7,7 @@ metadata:
     service: profile
 spec:
   ports:
-  - port: 5003
+  - port: 80
     name: http
   selector:
     app: profile
@@ -42,9 +42,21 @@ spec:
       containers:
       - name: profile
         image: gcr.io/fluted-agency-265710/profile:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
-        - containerPort: 5003
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /status/healthz
+            port: 80
+          initialDelaySeconds: 90
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /status/healthz
+            port: 80
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -92,5 +104,5 @@ spec:
           host: profile.default.svc.cluster.local
           # host: profile-api.expo-dev.svc.cluster.local
           port:
-            number: 5003
+            number: 80
 

@@ -3,9 +3,8 @@
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
-EXPOSE 5003
-EXPOSE 15003
-# ENV ASPNETCORE_URLS=http://+:5003
+EXPOSE 80
+# ENV ASPNETCORE_URLS=http://+:80
 # Copy csproj and restore as distinct layers
 # COPY ./Profile/Profile.csproj ./Profile
 # COPY ./Profile.Entityframework/Profile.Entityframework.csproj ./Profile.Entityframework

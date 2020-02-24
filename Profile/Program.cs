@@ -27,16 +27,16 @@ namespace Profile
                     //     // IdentityModelEventSource.ShowPII = true; // only for demo
                     //     options.Limits.MinRequestBodyDataRate = null;
 
-                    //     options.Listen(IPAddress.Any, 5003);
-                    //     options.Listen(IPAddress.Any, 15003, listenOptions =>
+                    //     options.Listen(IPAddress.Any, 80);
+                    //     options.Listen(IPAddress.Any, 180, listenOptions =>
                     //     {
                     //         listenOptions.Protocols = HttpProtocols.Http2;
                     //     });
                     // });
                     webBuilder
-                        // .UseUrls("http://*:5003")
+                        // .UseUrls("http://*:80")
                         .UseKestrel(options=>{
-                            options.Listen(IPAddress.Any,5003);
+                            options.Listen(IPAddress.Any,80);
                         })
                         .UseStartup<Startup>();
                 });

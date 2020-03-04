@@ -8,7 +8,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    name: http
+    name: http-web #naming very important
   selector:
     app: profile
 ---
@@ -41,10 +41,61 @@ spec:
       serviceAccountName: croudpulse-profile
       containers:
       - name: profile
-        image: gcr.io/fluted-agency-265710/profile:alpha-v0.0.1
-        imagePullPolicy: IfNotPresent
+        image: gcr.io/fluted-agency-265710/profile:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /status/healthz
+            port: 80
+          initialDelaySeconds: 90
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /status/healthz
+            port: 80
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: profile-v2
+    labels:
+      app: profile
+      version: v2
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: profile
+        version: v2
+    template:
+      metadata:
+        labels:
+          app: profile
+          version: v2
+      spec:
+        serviceAccountName: croudpulse-profile
+        containers:
+        - name: profile
+          image: gcr.io/fluted-agency-265710/profile:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /status/healthz
+              port: 80
+            initialDelaySeconds: 90
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /status/healthz
+              port: 80
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -90,7 +141,34 @@ spec:
     - route:
       - destination:
           host: profile.default.svc.cluster.local
-          # host: profile-api.expo-dev.svc.cluster.local
+          subset: v1
           port:
             number: 80
-
+        weight: 10
+      - destination:
+          host: profile.default.svc.cluster.local
+          subset: v2
+          port:
+            number: 80
+        weight: 90
+---
+  apiVersion: networking.istio.io/v1alpha3
+  kind: DestinationRule
+  metadata:
+    name: profile
+  spec:
+    host: "*"
+    # trafficPolicy:
+    #   loadBalancer:
+    #     simple: RANDOM
+    subsets:
+    - name: v1
+      labels:
+        version: v1
+    - name: v2
+      labels:
+        version: v2
+    # - name: v3
+    #   labels:
+    #     version: v3
+  

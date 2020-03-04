@@ -1,8 +1,10 @@
+#always run the build command from the solution folder.
+#eg :podman build -f Profile/Dockerfile -t gcr.io/fluted-agency-265710/profile:alpha-v0.0.1 .
+
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
-EXPOSE 5003
-EXPOSE 15003
-
+EXPOSE 80
+# ENV ASPNETCORE_URLS=http://+:80
 # Copy csproj and restore as distinct layers
 # COPY ./Profile/Profile.csproj ./Profile
 # COPY ./Profile.Entityframework/Profile.Entityframework.csproj ./Profile.Entityframework

@@ -16,7 +16,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                //git branch: 'master', url: 'https://github.com/CroudPulse/Profile.git'
                 checkout scm
             }
         }
@@ -41,7 +40,7 @@ pipeline {
                     sh 'google-cloud-sdk/bin/gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io'
                     sh 'google-cloud-sdk/bin/gcloud components install kubectl'
                     sh 'google-cloud-sdk/bin/kubectl version --client=true'
-                    sh 'google-cloud-sdk/bin/kubectl container clusters get-credentials $cluster --zone $zone --project $project'
+                    sh 'google-cloud-sdk/bin/gcloud container clusters get-credentials $cluster --zone $zone --project $project'
                     sh 'google-cloud-sdk/bin/kubectl get po'
                 }
             }

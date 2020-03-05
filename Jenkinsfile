@@ -13,7 +13,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/CroudPulse/Profile.git'
+                //git branch: 'master', url: 'https://github.com/CroudPulse/Profile.git'
+                checkout scm
             }
         }
         stage('Clean Repository') {

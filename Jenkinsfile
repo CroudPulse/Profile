@@ -10,6 +10,8 @@ pipeline {
         registryCredential = 'dockerhub'
         token = credentials('docker-token')
         gcloud_sdk = 'https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz'
+        major_version = "0"
+        minor_version = "0"
     }  
     agent any  
     
@@ -49,7 +51,8 @@ pipeline {
         stage('Building image') {
             steps {
                 script{
-                    testImage = docker.build('$registry/$project/$apiname:$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
+                    // Semantic versioning 
+                    testImage = docker.build('$registry/$project/$apiname:$major_version.$minor_version.$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
                 }
             }
         }

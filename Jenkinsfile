@@ -2,8 +2,11 @@ def testImage
 
 pipeline {  
     environment {
-        registry = "gcr.io"
+        cluster = "istio-playground"
+        zone = "us-central1-a"
         project = "fluted-agency-265710"
+        apiname = "profile"
+        registry = "gcr.io"
         registryCredential = 'dockerhub'
         token = credentials('docker-token')
         gcloud_sdk = 'https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz'
@@ -38,6 +41,8 @@ pipeline {
                     sh 'google-cloud-sdk/bin/gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io'
                     sh 'google-cloud-sdk/bin/gcloud components install kubectl'
                     sh 'google-cloud-sdk/bin/kubectl version --client=true'
+                    sh 'google-cloud-sdk/bin/kubectl container clusters get-credentials $cluster --zone $zone --project $project'
+                    sh 'google-cloud-sdk/bin/kubectl get po'
                 }
             }
         }
@@ -45,7 +50,7 @@ pipeline {
         stage('Building image') {
             steps {
                 script{
-                    testImage = docker.build(registry + "/" + project + "/profile" + ":$BUILD_NUMBER","--no-cache -f ./Profile/Dockerfile .")
+                    testImage = docker.build('$registry/$project/$apiname:$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
                 }
             }
         }

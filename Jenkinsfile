@@ -1,44 +1,12 @@
-// pipeline {
-//    agent any
-
-//    stages {
-//         stage('Checkout') {
-//             steps {
-//                 git branch: 'master', url: 'https://github.com/CroudPulse/Profile.git'
-//             }
-//         }
-      
-//         stage('Restore packages'){
-//             steps{
-//                 sh "dotnet restore Profile.sln"
-//             }
-//         }
-//         stage('Clean'){
-//             steps{
-//                 sh "dotnet clean Profile.sln"
-//             }
-//         }
-        
-//         stage('Build'){
-//             steps{
-//               sh "dotnet build Profile.sln --configuration Release"
-//             }
-//         }
-        
-//         stage('Publish'){
-//             steps{
-//                 sh "dotnet publish Profile.sln -c Release"
-//             }
-//         }
-//    }
-// }
-
+def testImage
 
 pipeline {  
     environment {
         registry = "gcr.io"
         project = "fluted-agency-265710"
         registryCredential = 'dockerhub'
+        token = credentials('docker-token')
+        gcloud_sdk = 'https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz'
     }  
     agent any  
     
@@ -53,12 +21,37 @@ pipeline {
                 sh "dotnet clean Profile.sln"
             }
         }
+
+        stage('Download gcloud sdk'){
+            steps{
+                sh 'wget $gcloud_sdk'
+                sh 'tar zxvf google-cloud-sdk.tar.gz && ./google-cloud-sdk/install.sh '
+            }
+        }
+        
+        stage('Prepare gcloud environment '){
+            steps{
+                withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
+                    //sh 'cat $FILE'
+                    sh 'google-cloud-sdk/bin/gcloud auth activate-service-account --key-file $FILE'
+                    sh 'google-cloud-sdk/bin/gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io'
+                }
+            }
+        }
+        
         stage('Building image') {
             steps {
-                script {
-                    def testImage = docker.build(registry + "/" + project + "/profile" + ":$BUILD_NUMBER","-f ./Profile/Dockerfile .")
-                    testImage.push()
+                script{
+                    testImage = docker.build(registry + "/" + project + "/profile" + ":$BUILD_NUMBER","--no-cache -f ./Profile/Dockerfile .")
                 }
+            }
+        }
+        
+        stage('Pushing Image'){
+            steps {
+                script{
+                    testImage.push() 
+                }   
             }
         }
     }

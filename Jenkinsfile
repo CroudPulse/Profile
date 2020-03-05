@@ -35,6 +35,8 @@ pipeline {
                     //sh 'cat $FILE'
                     sh 'google-cloud-sdk/bin/gcloud auth activate-service-account --key-file $FILE'
                     sh 'google-cloud-sdk/bin/gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io'
+                    sh 'google-cloud-sdk/bin/gcloud components install kubectl'
+                    sh 'kubectl version'
                 }
             }
         }

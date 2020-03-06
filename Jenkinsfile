@@ -7,8 +7,8 @@ pipeline {
         project = "fluted-agency-265710"
         apiname = "profile"
         registry = "gcr.io"
-        registryCredential = 'dockerhub'
-        token = credentials('docker-token')
+        // registryCredential = 'dockerhub'
+        // token = credentials('docker-token')
         gcloud_sdk = 'https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz'
         major_version = "0"
         minor_version = "0"

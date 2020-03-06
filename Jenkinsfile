@@ -15,6 +15,8 @@ pipeline {
     stages {
         stage('Prepare environment '){
             steps{
+                sh 'chmod +x ./dotnet-install.sh'
+                sh 'chmod +x ./gcloud-install.sh'
                 sh './dotnet-install.sh'
 
                 withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {

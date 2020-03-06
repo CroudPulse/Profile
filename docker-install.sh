@@ -9,6 +9,7 @@
 wget https://download.docker.com/linux/ubuntu/dists/bionic/pool/edge/amd64/containerd.io_1.2.0-1_amd64.deb
 wget https://download.docker.com/linux/ubuntu/dists/bionic/pool/edge/amd64/docker-ce-cli_19.03.7~3-0~ubuntu-bionic_amd64.deb
 
-dpkg -i /path/to/package.deb
+dpkg -i ./containerd.io_1.2.0-1_amd64.deb
+dpkg -i ./docker-ce-cli_19.03.7~3-0~ubuntu-bionic_amd64.deb
 systemctl enable dockers
 systemctl start docker

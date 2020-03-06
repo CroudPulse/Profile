@@ -16,11 +16,11 @@ pipeline {
     agent any  
     
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         checkout scm
+        //     }
+        // }
         stage('Clean Repository') {
             steps {
                 sh "dotnet clean Profile.sln"

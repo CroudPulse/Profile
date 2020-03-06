@@ -7,6 +7,6 @@ chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 
 
 apt-get update
-apt-get install apt-transport-https
+apt-get install apt-transport-https -y -qq
 apt-get update
-apt-get install dotnet-sdk-3.1
+apt-get install dotnet-sdk-3.1 -y -q

@@ -29,11 +29,11 @@ pipeline {
         //     }
         // }
 
-        stage('Clean Repository') {
-            steps {
-                sh "dotnet clean Profile.sln"
-            }
-        }
+        // stage('Clean Repository') {
+        //     steps {
+        //         sh "dotnet clean Profile.sln"
+        //     }
+        // }
         
         
         

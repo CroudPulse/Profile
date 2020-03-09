@@ -1,5 +1,4 @@
-wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
-tar zxvf google-cloud-sdk.tar.gz && ./google-cloud-sdk/install.sh
-
-google-cloud-sdk/bin/gcloud auth activate-service-account --key-file $FILE
-google-cloud-sdk/bin/gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+apt-get install apt-transport-https ca-certificates gnupg
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+apt-get update && sudo apt-get install google-cloud-sdk

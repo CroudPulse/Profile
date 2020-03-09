@@ -16,15 +16,15 @@ pipeline {
         stage('Prepare environment '){
             steps{
                 sh 'chmod +x ./dotnet-install.sh'
-                sh 'chmod +x ./gcloud-install.sh'
-                sh 'chmod +x ./docker-install.sh'
+                //sh 'chmod +x ./gcloud-install.sh'
+                //sh 'chmod +x ./docker-install.sh'
                 
                 sh './dotnet-install.sh'
-                sh './docker-install.sh'
+                //sh './docker-install.sh'
 
-                withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
-                    sh './gcloud-install.sh'
-                }
+                // withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
+                //     sh './gcloud-install.sh'
+                // }
 
             }
         }
@@ -46,13 +46,13 @@ pipeline {
             }
         }
         
-        stage('Pushing Image'){
-            steps {
-                script{
-                    testImage.push() 
-                }   
-            }
-        }
+        // stage('Pushing Image'){
+        //     steps {
+        //         script{
+        //             testImage.push() 
+        //         }   
+        //     }
+        // }
     }
 }
               

@@ -13,21 +13,21 @@ pipeline {
     agent any  
     
     stages {
-        stage('Prepare environment '){
-            steps{
-                sh 'chmod +x ./dotnet-install.sh'
-                //sh 'chmod +x ./gcloud-install.sh'
-                //sh 'chmod +x ./docker-install.sh'
+        // stage('Prepare environment '){
+        //     steps{
+        //         //sh 'chmod +x ./dotnet-install.sh'
+        //         //sh 'chmod +x ./gcloud-install.sh'
+        //         //sh 'chmod +x ./docker-install.sh'
                 
-                sh './dotnet-install.sh'
-                //sh './docker-install.sh'
+        //         //sh './dotnet-install.sh'
+        //         //sh './docker-install.sh'
 
-                // withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
-                //     sh './gcloud-install.sh'
-                // }
+        //         // withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
+        //         //     sh './gcloud-install.sh'
+        //         // }
 
-            }
-        }
+        //     }
+        // }
 
         stage('Clean Repository') {
             steps {

@@ -17,7 +17,7 @@ pipeline {
     //         args '-v $HOME:/home -w /home'    
     //     }
     // }
-    // stages {
+    stages {
     //     stage('Deploy') {
     //         steps {
     //             withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {

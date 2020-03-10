@@ -12,7 +12,7 @@ pipeline {
     }  
     agent{
         docker { 
-            image 'registry.hub.docker.com/google/cloud-sdk:alpine' 
+            image 'google/cloud-sdk:alpine' 
             args '-v $HOME:/home -w /home'    
         }
     }

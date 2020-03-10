@@ -15,14 +15,18 @@ pipeline {
     stages {
         stage('Prepare environment '){
             steps{
-                //sh 'chmod +x ./dotnet-install.sh'
-                sh 'chmod +x ./gcloud-install.sh'
+                buildEnv.inside("-u 0") {
+                    //sh 'chmod +x ./dotnet-install.sh'
+                    sh 'chmod +x ./gcloud-install.sh'
                 
-                //sh './dotnet-install.sh'
+                    //sh './dotnet-install.sh'
 
-                withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
-                    sh './gcloud-install.sh'
+                    withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
+                        sh './gcloud-install.sh'
+                    }
                 }
+
+                
 
                 // withCredentials([file(credentialsId: 'fluted-agency-265710', variable: 'GC_KEY')]) {
                 //     sh("gcloud auth activate-service-account --key-file=${GC_KEY}")

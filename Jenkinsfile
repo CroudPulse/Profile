@@ -18,7 +18,7 @@ pipeline {
                 
 
                 //sh 'chmod +x ./dotnet-install.sh'
-                sh 'chmod +x ./gcloud-install.sh'
+                // sh 'chmod +x ./gcloud-install.sh'
                 
                 //sh './dotnet-install.sh'
 
@@ -33,14 +33,14 @@ pipeline {
             }
         }
 
-        // stage('Building image') {
-        //     steps {
-        //         script{
-        //             // Semantic versioning 
-        //             profileImage = docker.build('$registry/$project/$apiname:$major_version.$minor_version.$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
-        //         }
-        //     }
-        // }
+        stage('Building image') {
+            steps {
+                script{
+                    // Semantic versioning 
+                    profileImage = docker.build('$registry/$project/$apiname:$major_version.$minor_version.$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
+                }
+            }
+        }
         
         // stage('Pushing Image'){
         //     steps {

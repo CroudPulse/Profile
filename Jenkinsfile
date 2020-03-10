@@ -24,29 +24,29 @@ pipeline {
                 //     sh './gcloud-install.sh'
                 // }
 
-                withCredentials([file(credentialsId: 'fluted-agency-265710', variable: 'GC_KEY')]) {
-                    sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
-                    sh "google-cloud-sdk/bin/gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io"
-                }
+                // withCredentials([file(credentialsId: 'fluted-agency-265710', variable: 'GC_KEY')]) {
+                //     sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
+                //     sh "google-cloud-sdk/bin/gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io"
+                // }
             }
         }
 
-        stage('Building image') {
-            steps {
-                script{
-                    // Semantic versioning 
-                    profileImage = docker.build('$registry/$project/$apiname:$major_version.$minor_version.$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
-                }
-            }
-        }
+        // stage('Building image') {
+        //     steps {
+        //         script{
+        //             // Semantic versioning 
+        //             profileImage = docker.build('$registry/$project/$apiname:$major_version.$minor_version.$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
+        //         }
+        //     }
+        // }
         
-        stage('Pushing Image'){
-            steps {
-                script{
-                    profileImage.push() 
-                }   
-            }
-        }
+        // stage('Pushing Image'){
+        //     steps {
+        //         script{
+        //             profileImage.push() 
+        //         }   
+        //     }
+        // }
     }
 }
               

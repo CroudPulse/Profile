@@ -23,7 +23,7 @@ pipeline {
                 //sh './dotnet-install.sh'
 
                 withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
-                    sh "google-cloud-sdk/bin/gcloud auth activate-service-account --key-file $FILE"
+                    sh "gcloud auth activate-service-account --key-file $FILE"
                 }
 
                 // withCredentials([file(credentialsId: 'fluted-agency-265710', variable: 'GC_KEY')]) {

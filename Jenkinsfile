@@ -10,25 +10,26 @@ pipeline {
         major_version = "0"
         minor_version = "0"
     }  
-    agent{
-        docker { 
-            image 'google/cloud-sdk:alpine' 
-            args '-v $HOME:/home -w /home'    
-        }
-    }
-    stages {
-        stage('Deploy') {
-            steps {
-                withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
-                    sh '''
-                    set +x
-                    HOME=$WORKSPACE
-                    gcloud auth activate-service-account --key-file $FILE
-                    '''
-                }
-            }
-        }
-    }
+    agent any
+    // agent{
+    //     docker { 
+    //         image 'google/cloud-sdk:alpine' 
+    //         args '-v $HOME:/home -w /home'    
+    //     }
+    // }
+    // stages {
+    //     stage('Deploy') {
+    //         steps {
+    //             withCredentials([file(credentialsId: 'Jenkins-SA-Key-File', variable: 'FILE')]) {
+    //                 sh '''
+    //                 set +x
+    //                 HOME=$WORKSPACE
+    //                 gcloud auth activate-service-account --key-file $FILE
+    //                 '''
+    //             }
+    //         }
+    //     }
+    // }
     // stages {
     //     stage('Prepare environment '){
     //         steps{
@@ -50,14 +51,14 @@ pipeline {
     //         }
     //     }
 
-    //     stage('Building image') {
-    //         steps {
-    //             script{
-    //                 // Semantic versioning 
-    //                 profileImage = docker.build('$registry/$project/$apiname:$major_version.$minor_version.$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
-    //             }
-    //         }
-    //     }
+        stage('Building image') {
+            steps {
+                script{
+                    // Semantic versioning 
+                    profileImage = docker.build('$registry/$project/$apiname:$major_version.$minor_version.$BUILD_NUMBER','--no-cache -f ./Profile/Dockerfile .')
+                }
+            }
+        }
         
     //     stage('Pushing Image'){
     //         steps {

@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: profile
+  labels:
+    name: profile
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: profile
+    spec:
+      containers:
+        - image: gcr.io/fluted-agency-265710/profilew:latest
+          name: profile
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "55M"
+            limits:
+              cpu: "500m"
+              memory: "150M"
+          livenessProbe:
+            httpGet:
+              path: /status/healthz
+              port: 80
+            initialDelaySeconds: 90
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /status/healthz
+              port: 80
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          ports:
+            - containerPort: 80
+              name: http
+      restartPolicy: Always
+      imagePullPolicy: IfNotPresent

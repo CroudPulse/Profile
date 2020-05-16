@@ -44,19 +44,21 @@ namespace Profile.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EF.Profile profile)
         {
-            // profile.ProfileId = Guid.NewGuid ().ToString ();
+            profile.ProfileId = Guid.NewGuid().ToString();
             profile = ProfileMock.People();
-            this.context.Profile.Add(profile);
-            await this.context.SaveChangesAsync();
+            // this.context.Profile.Add(profile);
+            // await this.context.SaveChangesAsync();
 
-            var json = JsonConvert.SerializeObject(profile);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            await notify.Notify<StringContent>(data);
-            //var data = new FormUrlEncodedContent(new[]
-            //{
-            //    new KeyValuePair<string, string>("value",json)
-            //});
-            //await notify.Notify<FormUrlEncodedContent>(data);
+            // var json = JsonConvert.SerializeObject(profile);
+            // var data = new StringContent(json, Encoding.UTF8, "application/json");
+            // await notify.Notify<StringContent>(data);
+            // //var data = new FormUrlEncodedContent(new[]
+            // //{
+            // //    new KeyValuePair<string, string>("value",json)
+            // //});
+            // //await notify.Notify<FormUrlEncodedContent>(data);
+
+            await notify.Create(profile);
             return Ok(profile);
         }
 

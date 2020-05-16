@@ -4,16 +4,12 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 EXPOSE 80
-# ENV ASPNETCORE_URLS=http://+:80
-# Copy csproj and restore as distinct layers
-# COPY ./Profile/Profile.csproj ./Profile
-# COPY ./Profile.Entityframework/Profile.Entityframework.csproj ./Profile.Entityframework
-# WORKDIR /app/Profile/
+
 COPY . ./
 RUN dotnet publish Profile -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.4-alpine3.11
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "Profile.dll"]

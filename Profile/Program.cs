@@ -33,12 +33,15 @@ namespace Profile
                     //         listenOptions.Protocols = HttpProtocols.Http2;
                     //     });
                     // });
-                    webBuilder
-                        // .UseUrls("http://*:80")
-                        .UseKestrel(options=>{
-                            options.Listen(IPAddress.Any,80);
-                        })
-                        .UseStartup<Startup>();
+                    // webBuilder
+                    //     // .UseUrls("http://*:80")
+                    //     .UseKestrel(options=>{
+                    //         options.Listen(IPAddress.Any,80);
+                    //     })
+                    //     .UseStartup<Startup>();
+
+                    webBuilder.UseStartup<Startup>();
+
                 });
     }
 }

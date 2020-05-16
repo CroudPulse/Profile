@@ -21,7 +21,7 @@ steps:
   args: 
   - 'apply'
   - '-f'
-  - 'Deploy/'
+  - 'Profile/Deploy/'
   env:
     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
     - 'CLOUDSDK_CONTAINER_CLUSTER=cpulse'

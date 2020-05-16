@@ -3,6 +3,8 @@ steps:
   id: 'build'
   args: 
   - 'build'
+  - '-f'
+  - 'Profile/Dockerfile'
   - '-t'
   - 'gcr.io/$PROJECT_ID/profile:$COMMIT_SHA'
   -  '.'

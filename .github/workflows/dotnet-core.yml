@@ -8,9 +8,9 @@ on:
 
 jobs:
   build:
-
+  
     runs-on: ubuntu-latest
-
+  
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -20,6 +20,14 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore -o release
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+  
+  package:
+    name: "Package and push docker image"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Buld and push image
+        uses: docker/build-push-action@v1.1.0
